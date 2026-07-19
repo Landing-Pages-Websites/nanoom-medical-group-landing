@@ -2,13 +2,23 @@
 
 import { useRef, useState } from "react";
 import { useMegaLeadForm } from "@/hooks/useMegaLeadForm";
-import { PHONE, BRAND } from "@/lib/content";
+import {
+  PHONE,
+  PHONE_HREF,
+  BRAND,
+  SERVICE_CONCIERGE,
+  SERVICE_GLP1,
+  CONCIERGE_GOALS,
+  WEIGHTLOSS_INTENTS,
+} from "@/lib/content";
 import { Icon } from "@/components/icons";
 
 declare global {
   interface Window {
     dataLayer?: Record<string, unknown>[];
-    MegaTag?: { trackEvent?: (event: string, data: Record<string, unknown>) => void };
+    MegaTag?: {
+      trackEvent?: (event: string, data: Record<string, unknown>) => void;
+    };
   }
 }
 
@@ -18,46 +28,63 @@ const EMAIL_RE = /^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$/;
 const NANP_RE = /^[2-9](?!11)\d{2}[2-9](?!11)\d{2}\d{4}$/;
 
 type FieldKey =
+  | "serviceInterest"
+  | "conciergeGoal"
+  | "weightlossIntent"
   | "firstName"
   | "lastName"
   | "email"
-  | "phone"
-  | "investOutOfPocket"
-  | "englishCare";
+  | "phone";
 
 interface FormState {
+  serviceInterest: string;
+  conciergeGoal: string;
+  weightlossIntent: string;
   firstName: string;
   lastName: string;
   email: string;
   phone: string;
-  healthConcerns: string;
-  investOutOfPocket: "yes" | "no" | "";
-  englishCare: "yes" | "no" | "";
 }
 
 const INITIAL: FormState = {
+  serviceInterest: "",
+  conciergeGoal: "",
+  weightlossIntent: "",
   firstName: "",
   lastName: "",
   email: "",
   phone: "",
-  healthConcerns: "",
-  investOutOfPocket: "",
-  englishCare: "",
 };
 
 type FieldErrors = Partial<Record<FieldKey, string>>;
 
-const REQUIRED_ORDER: FieldKey[] = [
+// DOM order — used to focus the first invalid field.
+const FOCUS_ORDER: FieldKey[] = [
+  "serviceInterest",
+  "conciergeGoal",
+  "weightlossIntent",
   "firstName",
   "lastName",
   "email",
   "phone",
-  "investOutOfPocket",
-  "englishCare",
 ];
+
+function requiredKeys(data: FormState): FieldKey[] {
+  const keys: FieldKey[] = ["serviceInterest"];
+  if (data.serviceInterest === SERVICE_CONCIERGE) keys.push("conciergeGoal");
+  else if (data.serviceInterest === SERVICE_GLP1) keys.push("weightlossIntent");
+  keys.push("firstName", "lastName", "email", "phone");
+  return keys;
+}
 
 function validateField(key: FieldKey, value: string): string | undefined {
   switch (key) {
+    case "serviceInterest":
+      return value ? undefined : "Please choose the service you're interested in.";
+    case "conciergeGoal":
+      return value ? undefined : "Please select an option.";
+    case "weightlossIntent":
+      return value ? undefined : "Please select an option.";
     case "firstName":
       return value.trim() ? undefined : "First name is required.";
     case "lastName":
@@ -73,16 +100,12 @@ function validateField(key: FieldKey, value: string): string | undefined {
       if (digits.length !== 10) return "Please enter a valid 10-digit phone number.";
       return NANP_RE.test(digits) ? undefined : "Please enter a valid US phone number.";
     }
-    case "investOutOfPocket":
-      return value ? undefined : "Please select Yes or No.";
-    case "englishCare":
-      return value ? undefined : "Please select Yes or No.";
   }
 }
 
 function validateAll(data: FormState): FieldErrors {
   const errors: FieldErrors = {};
-  REQUIRED_ORDER.forEach((k) => {
+  requiredKeys(data).forEach((k) => {
     const err = validateField(k, data[k]);
     if (err) errors[k] = err;
   });
@@ -97,26 +120,34 @@ function formatPhone(value: string): string {
   return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
 }
 
-const QUESTIONS = {
-  investOutOfPocket:
-    "Are you open to investing in your health out of pocket? Our practice does not accept insurance.",
-  englishCare: "Are you comfortable receiving care and communicating in English?",
-} as const;
+function isQualified(data: FormState): boolean {
+  if (data.serviceInterest === SERVICE_CONCIERGE) {
+    return CONCIERGE_GOALS.some(
+      (g) => g.value === data.conciergeGoal && g.qualified,
+    );
+  }
+  if (data.serviceInterest === SERVICE_GLP1) {
+    return WEIGHTLOSS_INTENTS.some(
+      (w) => w.value === data.weightlossIntent && w.qualified,
+    );
+  }
+  return false;
+}
 
 interface FormCardProps {
   idPrefix?: string;
   eyebrow?: string;
   heading?: string;
   subheading?: string;
-  /** Per-route URL slug stored on the lead for downstream attribution. */
+  /** URL slug stored on the lead for downstream attribution. */
   routeSlug?: string;
 }
 
 export function FormCard({
   idPrefix = "form",
-  eyebrow = "Free Health Assessment",
-  heading = "Schedule Your Free Health Assessment",
-  subheading = "No insurance needed. No pressure. Just real answers from Dr. Vaughan's team.",
+  eyebrow = "Request your consultation",
+  heading = "See if you qualify",
+  subheading = "Choose your service and share a few details — no insurance needed, no pressure.",
   routeSlug,
 }: FormCardProps): React.ReactElement {
   const { submit } = useMegaLeadForm();
@@ -128,19 +159,39 @@ export function FormCard({
   const [submitted, setSubmitted] = useState(false);
 
   const inFlightRef = useRef(false);
+  const formRef = useRef<HTMLFormElement>(null);
   const fieldRefs = useRef<Partial<Record<FieldKey, HTMLElement | null>>>({});
 
-  const update = <K extends keyof FormState>(k: K, v: FormState[K]): void => {
-    setData((d) => ({ ...d, [k]: v }));
-    if (k === "healthConcerns") return;
-    const key = k as FieldKey;
+  const clearError = (key: FieldKey, value: string): void => {
     setErrors((prev) => {
-      if (!prev[key]) return prev;
-      if (validateField(key, String(v))) return prev;
+      if (!prev[key] || validateField(key, value)) return prev;
       const next = { ...prev };
       delete next[key];
       return next;
     });
+  };
+
+  const update = <K extends keyof FormState>(k: K, v: FormState[K]): void => {
+    setData((d) => ({ ...d, [k]: v }));
+    clearError(k as FieldKey, String(v));
+  };
+
+  const selectService = (service: string): void => {
+    // Switching services resets the other branch's answer + errors.
+    setData((d) => ({
+      ...d,
+      serviceInterest: service,
+      conciergeGoal: service === SERVICE_CONCIERGE ? d.conciergeGoal : "",
+      weightlossIntent: service === SERVICE_GLP1 ? d.weightlossIntent : "",
+    }));
+    setErrors((prev) => {
+      const next = { ...prev };
+      delete next.serviceInterest;
+      delete next.conciergeGoal;
+      delete next.weightlossIntent;
+      return next;
+    });
+    setTouched((t) => ({ ...t, serviceInterest: true }));
   };
 
   const markTouched = (k: FieldKey, currentValue: string): void => {
@@ -157,23 +208,25 @@ export function FormCard({
   const routeFor = (): string =>
     routeSlug || (typeof window !== "undefined" ? window.location.pathname : "/");
 
+  const collectFields = (qualified: boolean): Record<string, unknown> => ({
+    firstName: data.firstName.trim(),
+    lastName: data.lastName.trim(),
+    email: data.email.trim(),
+    phone: data.phone.replace(/\D/g, ""),
+    serviceInterest: data.serviceInterest,
+    conciergeGoal: data.conciergeGoal,
+    weightlossIntent: data.weightlossIntent,
+    qualified,
+    form_route: routeFor(),
+  });
+
   const fireTracking = (qualified: boolean): void => {
     if (typeof window === "undefined") return;
-    const fields = {
-      firstName: data.firstName.trim(),
-      lastName: data.lastName.trim(),
-      email: data.email.trim(),
-      phone: data.phone.replace(/\D/g, ""),
-      healthConcerns: data.healthConcerns.trim(),
-      investOutOfPocket: data.investOutOfPocket,
-      englishCare: data.englishCare,
-      qualified,
-      form_route: routeFor(),
-    };
-    // Hard-rule dataLayer push — every field as its own key.
+    const fields = collectFields(qualified);
+    // Hard-rule dataLayer push — every field as its own key, on EVERY submit.
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ event: "form_submission", ...fields });
-    // Only a QUALIFIED lead fires the conversion event.
+    // Only a QUALIFIED lead fires the Google conversion event.
     if (qualified) {
       window.dataLayer.push({ event: "form_submit", ...fields });
       window.MegaTag?.trackEvent?.("form_submit", fields);
@@ -181,7 +234,7 @@ export function FormCard({
   };
 
   const focusFirstInvalid = (allErrors: FieldErrors): void => {
-    const firstBad = REQUIRED_ORDER.find((k) => allErrors[k]);
+    const firstBad = FOCUS_ORDER.find((k) => allErrors[k]);
     if (!firstBad) return;
     const el = fieldRefs.current[firstBad];
     try {
@@ -191,37 +244,31 @@ export function FormCard({
     }
   };
 
-  const handleValidateAndSubmit = async (): Promise<void> => {
+  const handleSubmitClick = (): void => {
     if (inFlightRef.current || submitting || submitted) return;
     const allErrors = validateAll(data);
     if (Object.keys(allErrors).length > 0) {
       setErrors(allErrors);
-      setTouched(Object.fromEntries(REQUIRED_ORDER.map((k) => [k, true])));
+      setTouched(Object.fromEntries(requiredKeys(data).map((k) => [k, true])));
       focusFirstInvalid(allErrors);
       return;
     }
+    formRef.current?.requestSubmit();
+  };
+
+  const handleSubmit = async (): Promise<void> => {
+    if (inFlightRef.current || submitting || submitted) return;
     inFlightRef.current = true;
     setSubmitting(true);
-    const qualified =
-      data.investOutOfPocket === "yes" && data.englishCare === "yes";
+    const qualified = isQualified(data);
     try {
-      await submit({
-        firstName: data.firstName.trim(),
-        lastName: data.lastName.trim(),
-        email: data.email.trim(),
-        phone: data.phone.replace(/\D/g, ""),
-        healthConcerns: data.healthConcerns.trim(),
-        investOutOfPocket: data.investOutOfPocket,
-        englishCare: data.englishCare,
-        qualified,
-        route_slug: routeFor(),
-      });
+      await submit(collectFields(qualified));
       fireTracking(qualified);
       setSubmitted(true);
     } catch {
       // The network POST can fail, but the lead is still captured server-side
-      // by the optimizer's own listener. Fire our tracking and show the
-      // thank-you so the visitor is never stranded on a dead form.
+      // by the optimizer's own listener. Fire tracking and show the thank-you
+      // so the visitor is never stranded on a dead form.
       fireTracking(qualified);
       setSubmitted(true);
     } finally {
@@ -242,22 +289,22 @@ export function FormCard({
         <div className="flex flex-col items-center text-center gap-4">
           <div className="w-14 h-14 rounded-full flex items-center justify-center bg-[var(--color-accent-soft)]">
             <Icon
-              name="check"
-              className="w-7 h-7 text-[var(--color-success)]"
-              strokeWidth={2.4}
+              name="check-circle"
+              className="w-7 h-7 text-[var(--color-primary)]"
+              strokeWidth={2.2}
             />
           </div>
           <h3 className="font-display text-2xl md:text-3xl text-[var(--color-ink)]">
-            Thank you — we've got it.
+            Thank you — we&apos;ve got it.
           </h3>
           <p className="text-[var(--color-ink-soft)] text-base leading-relaxed">
-            Our team will reach out shortly to schedule your free health assessment
-            with Dr. Vaughan. We can&apos;t wait to help you get real answers.
+            Our team will reach out shortly to help you take the next step with
+            Nanoom Medical Group. We look forward to caring for you.
           </p>
           <p className="text-[var(--color-muted)] text-sm">
             Prefer to talk now? Call{" "}
             <a
-              href="tel:+17144349355"
+              href={PHONE_HREF}
               className="font-semibold text-[var(--color-primary)] whitespace-nowrap"
             >
               {PHONE}
@@ -269,15 +316,21 @@ export function FormCard({
     );
   }
 
+  const services = [
+    { value: SERVICE_GLP1, label: "Weight Loss", sub: "GLP-1 telehealth" },
+    { value: SERVICE_CONCIERGE, label: "Concierge", sub: "Membership medicine" },
+  ];
+
   return (
     <form
+      ref={formRef}
       onSubmit={(e) => {
         e.preventDefault();
-        void handleValidateAndSubmit();
+        void handleSubmit();
       }}
       noValidate
-      aria-label="Free Health Assessment request"
-      className="bg-white border border-[var(--color-border)] rounded-2xl p-6 md:p-8 shadow-soft space-y-4"
+      aria-label="Consultation request"
+      className="bg-white border border-[var(--color-border)] rounded-2xl p-6 md:p-8 shadow-soft space-y-5"
     >
       <div className="space-y-1">
         <p className="eyebrow">{eyebrow}</p>
@@ -286,6 +339,137 @@ export function FormCard({
         </h3>
         <p className="text-sm text-[var(--color-ink-soft)]">{subheading}</p>
       </div>
+
+      {/* Primary control — service select, first & above the fold */}
+      <fieldset
+        className="space-y-2"
+        aria-invalid={showErr("serviceInterest") || undefined}
+        aria-describedby={
+          showErr("serviceInterest") ? errId("serviceInterest") : undefined
+        }
+      >
+        <legend className="text-sm font-semibold text-[var(--color-ink)] mb-1">
+          Which service are you interested in?
+        </legend>
+        <div
+          ref={(el) => {
+            fieldRefs.current.serviceInterest = el;
+          }}
+          tabIndex={-1}
+          className="grid grid-cols-2 gap-2.5"
+        >
+          {services.map((s) => (
+            <label key={s.value} className="cursor-pointer">
+              <input
+                type="radio"
+                name={`${idPrefix}-serviceInterest`}
+                value={s.value}
+                checked={data.serviceInterest === s.value}
+                onChange={() => selectService(s.value)}
+                className="sr-only peer"
+                disabled={submitting}
+              />
+              <div className="h-full border border-[var(--color-border)] rounded-xl px-4 py-3 text-left transition-all hover:border-[var(--color-primary)] peer-checked:border-[var(--color-primary)] peer-checked:bg-[var(--color-primary-soft)] peer-focus-visible:ring-2 peer-focus-visible:ring-[var(--color-accent)] peer-focus-visible:ring-offset-1">
+                <span className="block font-semibold text-[15px] text-[var(--color-ink)]">
+                  {s.label}
+                </span>
+                <span className="block text-xs text-[var(--color-muted)] mt-0.5">
+                  {s.sub}
+                </span>
+              </div>
+            </label>
+          ))}
+        </div>
+        {showErr("serviceInterest") && (
+          <p id={errId("serviceInterest")} role="alert" className="lp-field-error">
+            {errors.serviceInterest}
+          </p>
+        )}
+      </fieldset>
+
+      {/* Conditional Q2 — branches on the selected service */}
+      {data.serviceInterest === SERVICE_CONCIERGE && (
+        <div>
+          <label
+            htmlFor={`${idPrefix}-conciergeGoal`}
+            className="block text-sm font-semibold text-[var(--color-ink)] mb-1.5"
+          >
+            What are you looking for in a doctor?
+          </label>
+          <select
+            ref={(el) => {
+              fieldRefs.current.conciergeGoal = el;
+            }}
+            id={`${idPrefix}-conciergeGoal`}
+            name="conciergeGoal"
+            value={data.conciergeGoal}
+            onChange={(e) => update("conciergeGoal", e.target.value)}
+            onBlur={(e) => markTouched("conciergeGoal", e.target.value)}
+            className={inputCls("conciergeGoal")}
+            aria-invalid={showErr("conciergeGoal") || undefined}
+            aria-describedby={
+              showErr("conciergeGoal") ? errId("conciergeGoal") : undefined
+            }
+            disabled={submitting}
+          >
+            <option value="">Select what matters most…</option>
+            {CONCIERGE_GOALS.map((g) => (
+              <option key={g.value} value={g.value}>
+                {g.value}
+              </option>
+            ))}
+          </select>
+          {showErr("conciergeGoal") && (
+            <p id={errId("conciergeGoal")} role="alert" className="lp-field-error">
+              {errors.conciergeGoal}
+            </p>
+          )}
+        </div>
+      )}
+
+      {data.serviceInterest === SERVICE_GLP1 && (
+        <div>
+          <label
+            htmlFor={`${idPrefix}-weightlossIntent`}
+            className="block text-sm font-semibold text-[var(--color-ink)] mb-1.5"
+          >
+            Are you currently looking for a medically supervised weight-loss
+            program?
+          </label>
+          <select
+            ref={(el) => {
+              fieldRefs.current.weightlossIntent = el;
+            }}
+            id={`${idPrefix}-weightlossIntent`}
+            name="weightlossIntent"
+            value={data.weightlossIntent}
+            onChange={(e) => update("weightlossIntent", e.target.value)}
+            onBlur={(e) => markTouched("weightlossIntent", e.target.value)}
+            className={inputCls("weightlossIntent")}
+            aria-invalid={showErr("weightlossIntent") || undefined}
+            aria-describedby={
+              showErr("weightlossIntent") ? errId("weightlossIntent") : undefined
+            }
+            disabled={submitting}
+          >
+            <option value="">Select an option…</option>
+            {WEIGHTLOSS_INTENTS.map((w) => (
+              <option key={w.value} value={w.value}>
+                {w.value}
+              </option>
+            ))}
+          </select>
+          {showErr("weightlossIntent") && (
+            <p
+              id={errId("weightlossIntent")}
+              role="alert"
+              className="lp-field-error"
+            >
+              {errors.weightlossIntent}
+            </p>
+          )}
+        </div>
+      )}
 
       <div className="grid grid-cols-2 gap-3">
         <div>
@@ -405,75 +589,9 @@ export function FormCard({
         )}
       </div>
 
-      <div>
-        <label
-          htmlFor={`${idPrefix}-healthConcerns`}
-          className="block text-sm font-medium text-[var(--color-ink)] mb-1.5"
-        >
-          What&apos;s going on with your health?{" "}
-          <span className="text-[var(--color-muted)] font-normal">(optional)</span>
-        </label>
-        <textarea
-          id={`${idPrefix}-healthConcerns`}
-          name="healthConcerns"
-          rows={2}
-          placeholder="Symptoms, conditions, or what you're hoping to solve…"
-          value={data.healthConcerns}
-          onChange={(e) => update("healthConcerns", e.target.value)}
-          className={`${inputBase} resize-none`}
-          disabled={submitting}
-        />
-      </div>
-
-      {REQUIRED_ORDER.filter(
-        (k) => k === "investOutOfPocket" || k === "englishCare",
-      ).map((key) => (
-        <fieldset
-          key={key}
-          className="space-y-2"
-          aria-invalid={showErr(key) || undefined}
-          aria-describedby={showErr(key) ? errId(key) : undefined}
-        >
-          <legend className="text-sm text-[var(--color-ink)] font-medium leading-snug">
-            {QUESTIONS[key as "investOutOfPocket" | "englishCare"]}
-          </legend>
-          <div
-            ref={(el) => {
-              fieldRefs.current[key] = el;
-            }}
-            tabIndex={-1}
-            className="grid grid-cols-2 gap-2"
-          >
-            {(["yes", "no"] as const).map((v) => (
-              <label key={v} className="cursor-pointer">
-                <input
-                  type="radio"
-                  name={`${idPrefix}-${key}`}
-                  value={v}
-                  checked={data[key] === v}
-                  onChange={() => {
-                    update(key, v);
-                    markTouched(key, v);
-                  }}
-                  className="sr-only peer"
-                  disabled={submitting}
-                />
-                <div className="border border-[var(--color-border)] text-[var(--color-ink-soft)] rounded-[10px] py-2.5 text-center font-semibold text-sm transition-all hover:border-[var(--color-primary)] peer-checked:bg-[var(--color-primary)] peer-checked:border-[var(--color-primary)] peer-checked:text-white peer-focus-visible:ring-2 peer-focus-visible:ring-[var(--color-accent)] peer-focus-visible:ring-offset-1">
-                  {v === "yes" ? "Yes" : "No"}
-                </div>
-              </label>
-            ))}
-          </div>
-          {showErr(key) && (
-            <p id={errId(key)} role="alert" className="lp-field-error">
-              {errors[key]}
-            </p>
-          )}
-        </fieldset>
-      ))}
-
       <button
-        type="submit"
+        type="button"
+        onClick={handleSubmitClick}
         disabled={submitting || submitted}
         className="w-full inline-flex items-center justify-center gap-2 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white rounded-full px-6 py-3.5 font-semibold text-base shadow-cta transition-colors disabled:opacity-55 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2"
       >
@@ -484,7 +602,7 @@ export function FormCard({
       </button>
 
       <p className="text-xs text-center leading-relaxed text-[var(--color-muted)]">
-        By submitting, you agree to be contacted about your assessment. We respect
+        By submitting, you agree to be contacted about your inquiry. We respect
         your privacy and never sell your information.
       </p>
     </form>

@@ -3,6 +3,7 @@ import { ImageResponse } from "next/og";
 export const size = { width: 180, height: 180 };
 export const contentType = "image/png";
 
+// Nanoom mark — deep-teal field with a serif "N" on warm ivory.
 export default function AppleIcon(): ImageResponse {
   return new ImageResponse(
     (
@@ -13,14 +14,14 @@ export default function AppleIcon(): ImageResponse {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "linear-gradient(135deg, #1C7FB8 0%, #0E3A5C 100%)",
-          color: "#ffffff",
-          fontSize: 118,
+          background: "#0F5C55",
+          color: "#FBF9F5",
+          fontSize: 112,
           fontWeight: 700,
-          fontFamily: "sans-serif",
+          fontFamily: "Georgia, 'Times New Roman', serif",
         }}
       >
-        V
+        N
       </div>
     ),
     { ...size },

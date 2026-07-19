@@ -11,7 +11,7 @@ interface FloatingCTAProps {
 
 export function FloatingCTA({
   label = BRAND.primaryCta,
-  href = "#hero",
+  href = "#contact",
 }: FloatingCTAProps = {}): React.ReactElement {
   const [show, setShow] = useState(false);
 
@@ -33,13 +33,13 @@ export function FloatingCTA({
           : "opacity-0 translate-y-6 pointer-events-none"
       }`}
     >
-      {/* Mobile: full-width tap-to-call + book bar */}
-      <div className="sm:hidden grid grid-cols-2 gap-px bg-[var(--color-border)] shadow-[0_-8px_24px_-12px_rgba(14,58,92,0.35)]">
+      {/* Mobile: full-width tap-to-call + request bar */}
+      <div className="sm:hidden grid grid-cols-2 gap-px bg-[var(--color-border)] shadow-[0_-8px_24px_-12px_rgba(11,58,54,0.35)]">
         <a
           href={PHONE_HREF}
           aria-label={`Call ${PHONE}`}
           tabIndex={tab}
-          className="flex items-center justify-center gap-2 bg-white text-[var(--color-secondary)] py-3.5 font-semibold text-sm"
+          className="flex items-center justify-center gap-2 bg-white text-[var(--color-primary)] py-3.5 font-semibold text-sm"
         >
           <Icon name="phone" className="w-4 h-4" strokeWidth={2.2} />
           Call now
@@ -49,7 +49,7 @@ export function FloatingCTA({
           tabIndex={tab}
           className="flex items-center justify-center gap-2 bg-[var(--color-primary)] text-white py-3.5 font-semibold text-sm"
         >
-          Free Assessment
+          {BRAND.primaryCta}
           <Icon name="arrow-right" className="w-4 h-4" strokeWidth={2.4} />
         </a>
       </div>

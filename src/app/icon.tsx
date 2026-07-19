@@ -3,7 +3,7 @@ import { ImageResponse } from "next/og";
 export const size = { width: 32, height: 32 };
 export const contentType = "image/png";
 
-// Vaughan Vitality mark — sky-blue tile with a healing-green pulse "V".
+// Nanoom mark — warm ivory tile with a deep-teal serif "N", gold hairline.
 export default function Icon(): ImageResponse {
   return new ImageResponse(
     (
@@ -14,15 +14,15 @@ export default function Icon(): ImageResponse {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "linear-gradient(135deg, #1C7FB8 0%, #0E3A5C 100%)",
-          color: "#ffffff",
+          background: "#0F5C55",
+          color: "#FBF9F5",
           fontSize: 22,
           fontWeight: 700,
-          fontFamily: "sans-serif",
+          fontFamily: "Georgia, 'Times New Roman', serif",
           borderRadius: 7,
         }}
       >
-        V
+        N
       </div>
     ),
     { ...size },

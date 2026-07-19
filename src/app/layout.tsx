@@ -1,39 +1,39 @@
 import type { Metadata } from "next";
-import { Work_Sans, Mulish } from "next/font/google";
+import { Fraunces, Manrope } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
-const display = Work_Sans({
+const display = Fraunces({
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  weight: ["400", "500", "600", "700"],
   variable: "--font-display-active",
   display: "swap",
 });
 
-const body = Mulish({
+const body = Manrope({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-body-active",
   display: "swap",
 });
 
-// === MEGA TAG CONFIG === (Vaughan Vitality production IDs)
-const SITE_KEY = "dh363zhqo7vdxcrv";
-const SITE_ID = "cf26cd40-0c1c-4582-81f6-a1f500a7f956";
-const PIXEL_ID = "3295158327190318";
-const GTM_ID = "GTM-5JZ2Z45";
+// === MEGA TAG CONFIG === (Nanoom Medical Group production IDs)
+const SITE_KEY = "sahnwl1jh6m444sr";
+const SITE_ID = "cb96a42c-b6ac-42cf-9755-09b9c9e9feb5";
+const GTM_ID = "GTM-MBQWGFNL";
+// This customer has NO Meta Pixel — the tag config omits pixelId entirely.
 
 export const metadata: Metadata = {
   title:
-    "Functional Medicine in Costa Mesa & Orange County | Vaughan Vitality & Wellness",
+    "Nanoom Medical Group | Telehealth Weight Loss & Concierge Medicine in LA",
   description:
-    "Told your labs are normal but you still feel terrible? Dr. Kristi Vaughan, DC, BCN, IFMCP, uses a root-cause, 1-on-1 functional-medicine approach to find what conventional medicine missed. Book your free health assessment.",
-  metadataBase: new URL("https://book.vaughanvitality.com"),
+    "Physician-supervised, personalized care since 2009. Convenient telehealth weight-loss support and a dedicated concierge physician you can actually reach — no insurance required. Trilingual care in English, Korean & Spanish. See if you qualify.",
+  metadataBase: new URL("https://nanoommedical.com"),
   openGraph: {
-    title: "Vaughan Vitality & Wellness — Root-Cause Functional Medicine",
+    title: "Nanoom Medical Group — Personalized, Physician-Supervised Care",
     description:
-      "A personalized, root-cause approach to thyroid, gut, autoimmune, and chronic symptoms — with Dr. Kristi Vaughan in Costa Mesa & Orange County.",
-    images: ["/images/vv/dr-vaughan.jpg"],
+      "Two focused offers, one trusted practice: medically supervised weight loss through telehealth, and concierge membership medicine with a dedicated physician. Serving Los Angeles since 2009.",
+    images: ["/images/nanoom/hero.jpg"],
     type: "website",
   },
   icons: {
@@ -48,7 +48,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }): React.ReactElement {
-  const megaTagConfig = `window.MEGA_TAG_CONFIG={siteKey:"${SITE_KEY}",siteId:"${SITE_ID}",gtmId:"${GTM_ID}",pixelId:"${PIXEL_ID}"};window.API_ENDPOINT="https://optimizer.gomega.ai";window.TRACKING_API_ENDPOINT="https://events-api.gomega.ai";`;
+  const megaTagConfig = `window.MEGA_TAG_CONFIG={siteKey:"${SITE_KEY}",siteId:"${SITE_ID}",gtmId:"${GTM_ID}"};window.API_ENDPOINT="https://optimizer.gomega.ai";window.TRACKING_API_ENDPOINT="https://events-api.gomega.ai";`;
 
   return (
     <html lang="en" className={`${display.variable} ${body.variable}`}>
@@ -67,7 +67,7 @@ export default function RootLayout({
       </head>
       <body className="bg-[var(--color-bg)] text-[var(--color-ink)] antialiased">
         {children}
-        {/* CallTrackingMetrics — universal Mega account */}
+        {/* CallTrackingMetrics — universal Mega account (never remove) */}
         <Script src="https://572388.tctm.co/t.js" strategy="afterInteractive" />
       </body>
     </html>

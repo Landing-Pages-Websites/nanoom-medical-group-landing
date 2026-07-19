@@ -10,11 +10,11 @@ export function Faq(): React.ReactElement {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="relative py-20 md:py-28 bg-white">
+    <section id="faq" className="relative py-20 md:py-28 bg-[var(--color-surface-alt)]">
       <div className="mx-auto max-w-3xl px-6 md:px-10">
         <Reveal className="text-center">
-          <p className="eyebrow">Questions & answers</p>
-          <h2 className="mt-3 font-display text-[clamp(1.7rem,3.2vw,2.4rem)] leading-[1.12] text-[var(--color-ink)]">
+          <p className="eyebrow">Questions &amp; answers</p>
+          <h2 className="mt-3 font-display text-[clamp(2rem,3.5vw,3rem)] leading-[1.12] text-[var(--color-ink)]">
             What you might be wondering
           </h2>
           <div className="hr-accent mt-6 w-24 mx-auto" />
