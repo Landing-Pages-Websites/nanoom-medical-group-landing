@@ -1,117 +1,58 @@
 {
-  "repo": "Landing-Pages-Websites/vaughan-vitality-landing",
-  "customer_name": "Vaughan Vitality & Wellness",
-  "primary_subdomain": "https://book.vaughanvitality.com",
-  "routes": ["/functional-medicine", "/gut-health", "/autoimmune", "/ (renders functional-medicine)"],
-  "notes": "Copy is grounded in the live site vaughanvitality.com. Hero pain language and condition lists are message-matched per ad group; no medical claims, no pricing, no cure/reverse/eliminate/heal language. Dr. Vaughan's personal health-journey framing (heavy metals, mold toxicity, subclinical thyroid) was supplied by the customer via the task intake and matches her documented clinical focus areas.",
-  "credential_claims": [
+  "repo": "Landing-Pages-Websites/nanoom-medical-group-landing",
+  "customer_name": "Nanoom Medical Group",
+  "customer_id": "5bb3954d-3b35-4679-a474-15dd71c92593",
+  "primary_subdomain": "https://call.nanoommed.com",
+  "routes": ["/ (single page — GLP-1 telehealth weight loss + concierge medicine)"],
+  "notes": "Copy is grounded in the customer's live site (nanoommed.com), the MEGA customer knowledge base (company_context/01_business_overview.md, 05_brand_authority.md), and the paid-ads strategy email/task intake. Healthcare-sensitive vertical: no medication brand/substance names, no outcome guarantees, no condition-specific clinical language — copy leads with the offer and next step per Google healthcare advertising policy.",
+  "claims": [
     {
-      "claim": "Dr. Kristi Vaughan, DC, BCN, IFMCP, B.S. — Functional Medicine Practitioner in Costa Mesa / Orange County",
-      "source_url": "https://www.vaughanvitality.com/about/",
+      "claim": "In practice since 2009 (15+ years)",
+      "source_url": "MEGA KB company_context/05_brand_authority.md; company_description; paid-ads strategy email (task intake)",
+      "verified": true,
+      "note": "KB: 'grown Nanoom from a single Los Angeles clinic in 2009 to a multi-state healthcare organization.'"
+    },
+    {
+      "claim": "Trilingual care — English, Korean, Spanish; 100% Korean-English bilingual physicians",
+      "source_url": "MEGA KB company_context/05_brand_authority.md",
+      "verified": true,
+      "note": "KB: 'The team provides services in English, Korean, and Spanish.'"
+    },
+    {
+      "claim": "Board-certified physicians and nurse practitioners",
+      "source_url": "MEGA KB company_context/05_brand_authority.md",
       "verified": true
     },
     {
-      "claim": "Doctoral training at Southern California University of Health Sciences, specializing in functional medicine, nutrition, and chiropractic",
-      "source_url": "https://www.vaughanvitality.com/about/",
+      "claim": "Los Angeles / Koreatown and Norwalk (California) locations",
+      "source_url": "paid-ads strategy email (task intake); company_description; nanoommed.com",
+      "verified": true,
+      "note": "Ad targeting anchors per strategy email: 15-25 mi radius around LA/Koreatown and Norwalk."
+    },
+    {
+      "claim": "'Nanoom (나눔)' means 'the spirit of sharing; care rooted in community'",
+      "source_url": "MEGA KB company_context/05_brand_authority.md",
       "verified": true
     },
     {
-      "claim": "IFM Certified Practitioner (IFMCP)",
-      "source_url": "https://www.ifm.org/practitioners/kristi-vaughan",
+      "claim": "No insurance required — membership / cash-pay model with same-day/priority concierge access",
+      "source_url": "MEGA KB company_context/01_business_overview.md; company_description; nanoommed.com; strategy email",
       "verified": true
     },
     {
-      "claim": "Author of \"Thyroid Track\"",
-      "source_url": "https://www.vaughanvitality.com/about/",
+      "claim": "GLP-1 telehealth is a medically supervised weight-loss program with physician oversight",
+      "source_url": "task input_data content_requests + form_fields (customer-provided spec)",
+      "verified": true,
+      "note": "Customer-provided in task spec. No medication names used; no outcome guarantees per compliance."
+    },
+    {
+      "claim": "Concierge medicine — dedicated physician, same-day/priority access, annual membership",
+      "source_url": "task input_data content_requests (customer-provided spec); nanoommed.com concierge-medicine page",
       "verified": true
     },
     {
-      "claim": "2023 Women in Medicine — Top Functional Medicine Practitioner Award",
-      "source_url": "https://www.vaughanvitality.com/about/",
-      "verified": true
-    },
-    {
-      "claim": "2020 Top Doctor Award",
-      "source_url": "https://www.vaughanvitality.com/about/",
-      "verified": true
-    },
-    {
-      "claim": "2016 Award of Excellence in Holistic Medicine",
-      "source_url": "https://www.vaughanvitality.com/about/",
-      "verified": true
-    },
-    {
-      "claim": "Specialization: autoimmune, thyroid disease, gut dysfunction, environmental toxicities (mold, heavy metals), brain balancing / cognitive health, hormone health",
-      "source_url": "https://www.vaughanvitality.com/",
-      "verified": true
-    },
-    {
-      "claim": "Diagnostic testing offered: blood work, food allergy & sensitivity test, heavy metal test, mold test, adrenal & hormone test",
-      "source_url": "https://www.vaughanvitality.com/about/",
-      "verified": true
-    }
-  ],
-  "stat_claims": [
-    {
-      "claim": "4.8 stars — 39 Google reviews",
-      "source_url": "https://www.vaughanvitality.com/testimonials/",
-      "verified": true
-    },
-    {
-      "claim": "4.8 stars on Yelp (33 reviews)",
-      "source_url": "https://www.yelp.com/biz/vaughan-vitality-wellness-costa-mesa-2",
-      "verified": true
-    }
-  ],
-  "testimonial_claims": [
-    {
-      "claim": "Christopher S. — first of 7 doctors that actually showed compassion; spent an extra hour; loves the holistic approach (lightly condensed from source)",
-      "source_url": "https://www.vaughanvitality.com/testimonials/",
-      "verified": true
-    },
-    {
-      "claim": "Morgan H. — hypothyroidism; wanted root cause instead of synthetic hormone; TSH and energy/sleep improved (condensed)",
-      "source_url": "https://www.vaughanvitality.com/testimonials/",
-      "verified": true
-    },
-    {
-      "claim": "Cara C. — chronic health issues since high school; science/data-based approach, excellent listener, whole-person care (condensed)",
-      "source_url": "https://www.vaughanvitality.com/testimonials/",
-      "verified": true
-    },
-    {
-      "claim": "Antonietta S. — Graves' disease stabilized, learned triggers, off the roller coaster (condensed)",
-      "source_url": "https://www.vaughanvitality.com/testimonials/",
-      "verified": true
-    },
-    {
-      "claim": "Phil J. — digestive issues (gas, indigestion) symptom-free after following recommendations (condensed)",
-      "source_url": "https://www.vaughanvitality.com/testimonials/",
-      "verified": true
-    },
-    {
-      "claim": "Kelly R. — works on physical and mental body; ability to diagnose and treat (condensed)",
-      "source_url": "https://www.vaughanvitality.com/testimonials/",
-      "verified": true
-    }
-  ],
-  "images": [
-    {
-      "file": "public/images/vv/dr-vaughan.jpg",
-      "claim": "Portrait of Dr. Kristi Vaughan",
-      "source_url": "https://www.vaughanvitality.com/",
-      "verified": true
-    },
-    {
-      "file": "public/images/vv/book.png",
-      "claim": "\"Thyroid Track\" book by Dr. Kristi Vaughan",
-      "source_url": "https://www.vaughanvitality.com/",
-      "verified": true
-    },
-    {
-      "file": "public/images/vv/{yoga-beach.jpg, digestion.jpg, autoimmune-family.jpg}",
-      "claim": "Condition / wellness imagery recovered from the live site",
-      "source_url": "https://www.vaughanvitality.com/",
+      "claim": "FAQ answers (telehealth logistics, no-insurance/membership, qualification, languages, locations)",
+      "source_url": "Composed from the above verified sources; no new factual claims introduced; compliant (no outcome claims, no medication names)",
       "verified": true
     }
   ]
