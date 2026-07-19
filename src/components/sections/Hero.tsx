@@ -13,7 +13,7 @@ export function Hero(): React.ReactElement {
       className="relative pt-28 md:pt-32 pb-14 md:pb-20 overflow-hidden"
     >
       {/* Warm, on-brand photography washed into an ivory backdrop */}
-      <div className="absolute inset-0 -z-10">
+      <div className="absolute inset-0 z-0">
         <Image
           src="/images/nanoom/hero.jpg"
           alt=""
@@ -33,7 +33,7 @@ export function Hero(): React.ReactElement {
         />
       </div>
 
-      <div className="mx-auto max-w-[1200px] px-6 md:px-10 grid lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+      <div className="relative z-10 mx-auto max-w-[1200px] px-6 md:px-10 grid lg:grid-cols-12 gap-10 lg:gap-12 items-center">
         <Reveal className="lg:col-span-6 order-1">
           <p className="eyebrow">{HERO.eyebrow}</p>
           <h1 className="mt-4 font-display font-semibold text-[var(--color-ink)] leading-[1.05] tracking-[-0.02em] text-[clamp(2.4rem,5vw,4rem)]">
@@ -59,7 +59,7 @@ export function Hero(): React.ReactElement {
             <a
               href={PHONE_HREF}
               aria-label={`Call ${PHONE}`}
-              className="inline-flex items-center gap-2 text-[var(--color-ink)] font-semibold text-sm hover:text-[var(--color-primary)] transition-colors"
+              className="inline-flex items-center gap-2 border border-[var(--color-primary)] text-[var(--color-primary)] rounded-full px-4 py-2 bg-white/80 hover:bg-[var(--color-primary-soft)] font-semibold text-sm transition-colors"
             >
               <Icon name="phone" className="w-4 h-4" strokeWidth={2.2} />
               {PHONE}

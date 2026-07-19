@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { PHONE, PHONE_HREF, BRAND } from "@/lib/content";
+import { BRAND } from "@/lib/content";
 import { Icon } from "@/components/icons";
 
 interface FloatingCTAProps {
@@ -33,21 +33,12 @@ export function FloatingCTA({
           : "opacity-0 translate-y-6 pointer-events-none"
       }`}
     >
-      {/* Mobile: full-width tap-to-call + request bar */}
-      <div className="sm:hidden grid grid-cols-2 gap-px bg-[var(--color-border)] shadow-[0_-8px_24px_-12px_rgba(11,58,54,0.35)]">
-        <a
-          href={PHONE_HREF}
-          aria-label={`Call ${PHONE}`}
-          tabIndex={tab}
-          className="flex items-center justify-center gap-2 bg-white text-[var(--color-primary)] py-3.5 font-semibold text-sm"
-        >
-          <Icon name="phone" className="w-4 h-4" strokeWidth={2.2} />
-          Call now
-        </a>
+      {/* Mobile: full-width request bar */}
+      <div className="sm:hidden shadow-[0_-8px_24px_-12px_rgba(11,58,54,0.35)]">
         <a
           href={href}
           tabIndex={tab}
-          className="flex items-center justify-center gap-2 bg-[var(--color-primary)] text-white py-3.5 font-semibold text-sm"
+          className="flex w-full items-center justify-center gap-2 bg-[var(--color-primary)] text-white py-3.5 font-semibold text-sm"
         >
           {BRAND.primaryCta}
           <Icon name="arrow-right" className="w-4 h-4" strokeWidth={2.4} />

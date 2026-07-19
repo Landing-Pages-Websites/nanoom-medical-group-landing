@@ -12,8 +12,7 @@ import { WhyNanoom } from "@/components/sections/WhyNanoom";
 import { HowItWorks } from "@/components/sections/HowItWorks";
 import { Faq } from "@/components/sections/Faq";
 import { FinalCta } from "@/components/sections/FinalCta";
-import { BRAND, PHONE, PHONE_HREF, TRACKING } from "@/lib/content";
-import { Icon } from "@/components/icons";
+import { BRAND, TRACKING } from "@/lib/content";
 
 export function NanoomLanding(): React.ReactElement {
   useTracking({
@@ -48,14 +47,6 @@ export function NanoomLanding(): React.ReactElement {
                 {BRAND.meaning}
               </span>
             </div>
-            <a
-              href={PHONE_HREF}
-              aria-label={`Call ${PHONE}`}
-              className="inline-flex items-center gap-2 text-white/90 hover:text-[var(--color-accent)] transition-colors font-semibold"
-            >
-              <Icon name="phone" className="w-4 h-4" strokeWidth={2.2} />
-              {PHONE}
-            </a>
           </div>
           <div className="flex flex-col md:flex-row gap-3 md:items-center md:justify-between border-t border-white/10 pt-6">
             <p className="text-white/70 text-sm">

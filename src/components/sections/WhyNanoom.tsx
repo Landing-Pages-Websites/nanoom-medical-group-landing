@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Reveal } from "@/components/Reveal";
 import { DualCTA } from "@/components/DualCTA";
 import { Icon } from "@/components/icons";
@@ -25,6 +26,15 @@ export function WhyNanoom(): React.ReactElement {
                 “{BRAND.meaning}”
               </blockquote>
             </figure>
+            <div className="relative mt-8 aspect-[4/3] rounded-3xl overflow-hidden shadow-soft ring-1 ring-[var(--color-border)]">
+              <Image
+                src="/images/nanoom/why-nanoom.jpg"
+                alt="Warm, welcoming Nanoom Medical Group reception space"
+                fill
+                sizes="(max-width: 1024px) 100vw, 460px"
+                className="object-cover"
+              />
+            </div>
             <div className="hidden lg:block">
               <DualCTA align="start" />
             </div>

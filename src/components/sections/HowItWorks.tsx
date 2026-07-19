@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Reveal } from "@/components/Reveal";
 import { DualCTA } from "@/components/DualCTA";
 import { Icon } from "@/components/icons";
@@ -21,7 +22,20 @@ export function HowItWorks(): React.ReactElement {
           </p>
         </Reveal>
 
-        <ol className="mt-14 grid md:grid-cols-3 gap-5">
+        <div className="mt-14 grid lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
+          <Reveal className="lg:col-span-5" delay={60}>
+            <div className="relative h-full min-h-[20rem] rounded-3xl overflow-hidden shadow-soft ring-1 ring-[var(--color-border)]">
+              <Image
+                src="/images/nanoom/how-it-works.jpg"
+                alt="Scheduling a Nanoom consultation on a tablet"
+                fill
+                sizes="(max-width: 1024px) 100vw, 460px"
+                className="object-cover"
+              />
+            </div>
+          </Reveal>
+
+          <ol className="lg:col-span-7 grid gap-5 sm:grid-cols-2">
           {HOW_IT_WORKS.steps.map((step, i) => (
             <Reveal key={step.title} delay={i * 90}>
               <li className="relative h-full rounded-2xl border border-[var(--color-border)] bg-white p-8 card-lift">
@@ -40,7 +54,8 @@ export function HowItWorks(): React.ReactElement {
               </li>
             </Reveal>
           ))}
-        </ol>
+          </ol>
+        </div>
 
         <Reveal delay={160}>
           <DualCTA align="center" />
