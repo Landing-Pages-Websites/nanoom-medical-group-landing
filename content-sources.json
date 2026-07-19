@@ -1,0 +1,118 @@
+{
+  "repo": "Landing-Pages-Websites/vaughan-vitality-landing",
+  "customer_name": "Vaughan Vitality & Wellness",
+  "primary_subdomain": "https://book.vaughanvitality.com",
+  "routes": ["/functional-medicine", "/gut-health", "/autoimmune", "/ (renders functional-medicine)"],
+  "notes": "Copy is grounded in the live site vaughanvitality.com. Hero pain language and condition lists are message-matched per ad group; no medical claims, no pricing, no cure/reverse/eliminate/heal language. Dr. Vaughan's personal health-journey framing (heavy metals, mold toxicity, subclinical thyroid) was supplied by the customer via the task intake and matches her documented clinical focus areas.",
+  "credential_claims": [
+    {
+      "claim": "Dr. Kristi Vaughan, DC, BCN, IFMCP, B.S. — Functional Medicine Practitioner in Costa Mesa / Orange County",
+      "source_url": "https://www.vaughanvitality.com/about/",
+      "verified": true
+    },
+    {
+      "claim": "Doctoral training at Southern California University of Health Sciences, specializing in functional medicine, nutrition, and chiropractic",
+      "source_url": "https://www.vaughanvitality.com/about/",
+      "verified": true
+    },
+    {
+      "claim": "IFM Certified Practitioner (IFMCP)",
+      "source_url": "https://www.ifm.org/practitioners/kristi-vaughan",
+      "verified": true
+    },
+    {
+      "claim": "Author of \"Thyroid Track\"",
+      "source_url": "https://www.vaughanvitality.com/about/",
+      "verified": true
+    },
+    {
+      "claim": "2023 Women in Medicine — Top Functional Medicine Practitioner Award",
+      "source_url": "https://www.vaughanvitality.com/about/",
+      "verified": true
+    },
+    {
+      "claim": "2020 Top Doctor Award",
+      "source_url": "https://www.vaughanvitality.com/about/",
+      "verified": true
+    },
+    {
+      "claim": "2016 Award of Excellence in Holistic Medicine",
+      "source_url": "https://www.vaughanvitality.com/about/",
+      "verified": true
+    },
+    {
+      "claim": "Specialization: autoimmune, thyroid disease, gut dysfunction, environmental toxicities (mold, heavy metals), brain balancing / cognitive health, hormone health",
+      "source_url": "https://www.vaughanvitality.com/",
+      "verified": true
+    },
+    {
+      "claim": "Diagnostic testing offered: blood work, food allergy & sensitivity test, heavy metal test, mold test, adrenal & hormone test",
+      "source_url": "https://www.vaughanvitality.com/about/",
+      "verified": true
+    }
+  ],
+  "stat_claims": [
+    {
+      "claim": "4.8 stars — 39 Google reviews",
+      "source_url": "https://www.vaughanvitality.com/testimonials/",
+      "verified": true
+    },
+    {
+      "claim": "4.8 stars on Yelp (33 reviews)",
+      "source_url": "https://www.yelp.com/biz/vaughan-vitality-wellness-costa-mesa-2",
+      "verified": true
+    }
+  ],
+  "testimonial_claims": [
+    {
+      "claim": "Christopher S. — first of 7 doctors that actually showed compassion; spent an extra hour; loves the holistic approach (lightly condensed from source)",
+      "source_url": "https://www.vaughanvitality.com/testimonials/",
+      "verified": true
+    },
+    {
+      "claim": "Morgan H. — hypothyroidism; wanted root cause instead of synthetic hormone; TSH and energy/sleep improved (condensed)",
+      "source_url": "https://www.vaughanvitality.com/testimonials/",
+      "verified": true
+    },
+    {
+      "claim": "Cara C. — chronic health issues since high school; science/data-based approach, excellent listener, whole-person care (condensed)",
+      "source_url": "https://www.vaughanvitality.com/testimonials/",
+      "verified": true
+    },
+    {
+      "claim": "Antonietta S. — Graves' disease stabilized, learned triggers, off the roller coaster (condensed)",
+      "source_url": "https://www.vaughanvitality.com/testimonials/",
+      "verified": true
+    },
+    {
+      "claim": "Phil J. — digestive issues (gas, indigestion) symptom-free after following recommendations (condensed)",
+      "source_url": "https://www.vaughanvitality.com/testimonials/",
+      "verified": true
+    },
+    {
+      "claim": "Kelly R. — works on physical and mental body; ability to diagnose and treat (condensed)",
+      "source_url": "https://www.vaughanvitality.com/testimonials/",
+      "verified": true
+    }
+  ],
+  "images": [
+    {
+      "file": "public/images/vv/dr-vaughan.jpg",
+      "claim": "Portrait of Dr. Kristi Vaughan",
+      "source_url": "https://www.vaughanvitality.com/",
+      "verified": true
+    },
+    {
+      "file": "public/images/vv/book.png",
+      "claim": "\"Thyroid Track\" book by Dr. Kristi Vaughan",
+      "source_url": "https://www.vaughanvitality.com/",
+      "verified": true
+    },
+    {
+      "file": "public/images/vv/{yoga-beach.jpg, digestion.jpg, autoimmune-family.jpg}",
+      "claim": "Condition / wellness imagery recovered from the live site",
+      "source_url": "https://www.vaughanvitality.com/",
+      "verified": true
+    }
+  ]
+}
