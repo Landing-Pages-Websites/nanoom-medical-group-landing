@@ -36,10 +36,6 @@ export const metadata: Metadata = {
     images: ["/images/nanoom/hero.jpg"],
     type: "website",
   },
-  icons: {
-    icon: "/icon.png",
-    apple: "/apple-icon.png",
-  },
   robots: { index: false, follow: false }, // LP — don't index until ads cutover
 };
 
