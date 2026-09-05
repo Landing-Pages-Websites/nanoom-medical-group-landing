@@ -56,8 +56,8 @@ export const WEIGHTLOSS_INTENTS = [
 // ─── Hero ───────────────────────────────────────────────────────────────────
 export const HERO = {
   eyebrow: "Personalized care · Since 2009",
-  headline: "Personal, physician-supervised care —",
-  headlineAccent: "made convenient for your life.",
+  headline: "Physician-Supervised Weight Loss &",
+  headlineAccent: "Concierge Medicine",
   subhead:
     "For over 15 years, Nanoom Medical Group has cared for our community with a personal touch. Choose the path that fits you: medically supervised weight loss made simple through telehealth, or a dedicated concierge physician you can actually reach — no insurance required.",
   chips: [
