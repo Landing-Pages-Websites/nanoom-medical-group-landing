@@ -59,7 +59,7 @@ export const HERO = {
   headline: "Physician-Supervised Weight Loss &",
   headlineAccent: "Concierge Medicine",
   subhead:
-    "For over 15 years, Nanoom Medical Group has cared for our community with a personal touch. Choose the path that fits you: medically supervised weight loss made simple through telehealth, or a dedicated concierge physician you can actually reach — no insurance required.",
+    "For over 15 years, Nanoom Medical Group has cared for our community with a personal touch. Connect with a weight loss doctor through convenient telehealth, or choose hybrid concierge care with insurance accepted plus membership access in Los Angeles.",
   chips: [
     "Physician-supervised",
     "Trilingual — English · Korean · Spanish",
